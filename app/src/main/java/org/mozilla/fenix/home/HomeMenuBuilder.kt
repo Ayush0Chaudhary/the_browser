@@ -191,7 +191,7 @@ class HomeMenuBuilder(
                 )
             }
             is HomeMenu.Item.DesktopMode -> {
-                context.settings().openNextTabInDesktopMode = item.checked
+                context.settings().openNextTabInDesktopMode = true
             }
         }
     }

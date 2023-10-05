@@ -218,6 +218,7 @@ open class DefaultToolbarMenu(
         onItemTapped.invoke(ToolbarMenu.Item.Downloads)
     }
 
+    //TODO: This is zombie code
     private val extensionsItem = WebExtensionPlaceholderMenuItem(
         id = WebExtensionPlaceholderMenuItem.MAIN_EXTENSIONS_MENU_ID,
     )
@@ -227,9 +228,10 @@ open class DefaultToolbarMenu(
         imageResource = R.drawable.mozac_ic_search,
         iconTintColorResource = primaryTextColor(),
     ) {
-        onItemTapped.invoke(ToolbarMenu.Item.FindInPage)
+        onItemTapped.invoke(ToolbarMenu.Item.Downloads)
     }
 
+    //TODO: This is zombie code
     private val desktopSiteItem = BrowserMenuImageSwitch(
         imageResource = R.drawable.ic_desktop,
         label = context.getString(R.string.browser_menu_desktop_site),
@@ -368,11 +370,11 @@ open class DefaultToolbarMenu(
                 bookmarksItem,
                 historyItem,
                 downloadsItem,
-                extensionsItem,
+//                extensionsItem,
                 syncMenuItem(),
                 BrowserMenuDivider(),
                 findInPageItem,
-                desktopSiteItem,
+//                desktopSiteItem,
                 customizeReaderView.apply { visible = ::shouldShowReaderViewCustomization },
                 openInApp.apply { visible = ::shouldShowOpenInApp },
                 reportSiteIssuePlaceholder,
@@ -382,7 +384,7 @@ open class DefaultToolbarMenu(
                 addRemoveTopSitesItem,
                 saveToCollectionItem,
                 BrowserMenuDivider(),
-                settingsItem,
+//                settingsItem,
                 if (shouldDeleteDataOnQuit) deleteDataOnQuit else null,
                 if (shouldUseBottomToolbar) BrowserMenuDivider() else null,
                 if (shouldUseBottomToolbar) menuToolbar else null,
