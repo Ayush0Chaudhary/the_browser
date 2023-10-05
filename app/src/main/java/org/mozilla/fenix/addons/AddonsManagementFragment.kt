@@ -290,7 +290,7 @@ class AddonsManagementFragment : Fragment(R.layout.fragment_add_ons_management) 
         }
 
         isInstallationInProgress = true
-
+        // this is where we can copy code for installing the code.
         val installOperation = requireContext().components.addonManager.installAddon(
             addon,
             onSuccess = {

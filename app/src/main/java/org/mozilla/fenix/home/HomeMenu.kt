@@ -147,6 +147,7 @@ class HomeMenu(
         ) {
             onItemTapped.invoke(Item.Extensions)
         }
+        print(extensionsItem)
 
         val manageAccountAndDevicesItem = SimpleBrowserMenuItem(
             context.getString(R.string.browser_menu_manage_account_and_devices),

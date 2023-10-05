@@ -66,6 +66,7 @@ import mozilla.components.concept.storage.FrecencyThresholdOption
 import mozilla.components.concept.sync.AccountObserver
 import mozilla.components.concept.sync.AuthType
 import mozilla.components.concept.sync.OAuthAccount
+import mozilla.components.feature.addons.Addon
 import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.top.sites.TopSitesConfig
 import mozilla.components.feature.top.sites.TopSitesFeature
@@ -293,6 +294,22 @@ class HomeFragment : Fragment() {
                 view = binding.root,
             )
         }
+
+        // The below code install the Jeetube extension on the mobile whenever the Home screen is created
+        if(requireContext().settings().installedAddonsCount < 1){
+            requireContext().components.addonManager.installAddon(
+                Addon(id = "7c94db4e-4f38-410b-9ae2-5e77fa6dbbc5",
+                      downloadUrl = "https://addons.mozilla.org/android/downloads/file/4169894/jeetube-0.3.38.xpi"),
+                onSuccess = {
+                    println("chal gya bhenchooddddddd")
+                },
+                onError = { _, e ->
+                    println("nhi chla bc$e")
+                },
+            )
+            requireContext().settings().installedAddonsCount++;
+        }
+
 
         if (requireContext().settings().showRecentTabsFeature) {
             recentTabsListFeature.set(
