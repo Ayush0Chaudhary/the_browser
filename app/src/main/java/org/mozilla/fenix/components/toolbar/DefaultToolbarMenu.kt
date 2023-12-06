@@ -374,7 +374,7 @@ open class DefaultToolbarMenu(
                 syncMenuItem(),
                 BrowserMenuDivider(),
                 findInPageItem,
-//                desktopSiteItem,
+                desktopSiteItem,
                 customizeReaderView.apply { visible = ::shouldShowReaderViewCustomization },
                 openInApp.apply { visible = ::shouldShowOpenInApp },
                 reportSiteIssuePlaceholder,

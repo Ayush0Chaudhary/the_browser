@@ -1,5 +1,13 @@
 # Firefox for Android
 
+For changing extension link, change Download url in b/app/src/main/java/org/mozilla/fenix/home/HomeFragment.kt
+
+```kotlin
+  Addon(id = "7c94db4e-4f38-410b-9ae2-5e77fa6dbbc5",
+    downloadUrl = "https://addons.mozilla.org/android/downloads/file/4169894/jeetube-0.3.38.xpi"),
+  onSuccess = {
+```
+
 [![Task Status](https://firefox-ci-tc.services.mozilla.com/api/github/v1/repository/mozilla-mobile/fenix/main/badge.svg)](https://firefox-ci-tc.services.mozilla.com/api/github/v1/repository/mozilla-mobile/fenix/main/latest)
 [![codecov](https://codecov.io/gh/mozilla-mobile/fenix/branch/main/graph/badge.svg)](https://codecov.io/gh/mozilla-mobile/fenix)
 

@@ -28,6 +28,7 @@ import mozilla.components.feature.addons.ui.AddonInstallationDialogFragment
 import mozilla.components.feature.addons.ui.AddonsManagerAdapter
 import mozilla.components.feature.addons.ui.PermissionsDialogFragment
 import mozilla.components.feature.addons.ui.translateName
+import mozilla.components.support.locale.LocaleManager
 import org.mozilla.fenix.BuildConfig
 import org.mozilla.fenix.Config
 import org.mozilla.fenix.R
@@ -35,9 +36,12 @@ import org.mozilla.fenix.components.FenixSnackbar
 import org.mozilla.fenix.databinding.FragmentAddOnsManagementBinding
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.getRootView
+import org.mozilla.fenix.ext.getStringWithArgSafe
+import org.mozilla.fenix.ext.logDebug
 import org.mozilla.fenix.ext.runIfFragmentIsAttached
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showToolbar
+import org.mozilla.fenix.settings.advanced.getSelectedLocale
 import org.mozilla.fenix.theme.ThemeManager
 import java.lang.ref.WeakReference
 import java.util.concurrent.CancellationException
@@ -288,6 +292,8 @@ class AddonsManagementFragment : Fragment(R.layout.fragment_add_ons_management) 
         if (requireContext().settings().accessibilityServicesEnabled) {
             binding?.let { announceForAccessibility(it.addonProgressOverlay.addOnsOverlayText.text) }
         }
+        print(addon.downloadUrl+ "!!!!!!!!!!!!!!!!!!!!")
+        print(addon.id+ "!!!!!!!!!!!!!!!!!!!!")
 
         isInstallationInProgress = true
         // this is where we can copy code for installing the code.
@@ -295,12 +301,17 @@ class AddonsManagementFragment : Fragment(R.layout.fragment_add_ons_management) 
             addon,
             onSuccess = {
                 runIfFragmentIsAttached {
+                    logDebug(
+                        addon.id,
+                        addon.downloadUrl,
+                    )
                     isInstallationInProgress = false
                     adapter?.updateAddon(it)
                     binding?.addonProgressOverlay?.overlayCardView?.visibility = View.GONE
                     showInstallationDialog(it)
                 }
             },
+//            18061051        myfavaddons
             onError = { _, e ->
                 this@AddonsManagementFragment.view?.let { view ->
                     // No need to display an error message if installation was cancelled by the user.

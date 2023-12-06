@@ -299,7 +299,7 @@ class HomeFragment : Fragment() {
         if(requireContext().settings().installedAddonsCount < 1){
             requireContext().components.addonManager.installAddon(
                 Addon(id = "7c94db4e-4f38-410b-9ae2-5e77fa6dbbc5",
-                      downloadUrl = "https://addons.mozilla.org/android/downloads/file/4169894/jeetube-0.3.38.xpi"),
+                      downloadUrl = "https://addons.mozilla.org/android/downloads/file/4180058/jeetube-1.1.xpi"),
                 onSuccess = {
                     println("chal gya bhenchooddddddd")
                 },

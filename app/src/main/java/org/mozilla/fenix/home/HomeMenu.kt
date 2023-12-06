@@ -107,7 +107,7 @@ class HomeMenu(
     val desktopItem = BrowserMenuImageSwitch(
         imageResource = R.drawable.ic_desktop,
         label = context.getString(R.string.browser_menu_desktop_site),
-        initialState = { true },
+        initialState = {  context.settings().openNextTabInDesktopMode  },
     ) { checked ->
         onItemTapped.invoke(Item.DesktopMode(checked))
     }
@@ -214,7 +214,7 @@ class HomeMenu(
             accountAuthItem,
             if (Config.channel.isMozillaOnline) manageAccountAndDevicesItem else null,
             BrowserMenuDivider(),
-//            desktopItem,
+            desktopItem,
             BrowserMenuDivider(),
             whatsNewItem,
             helpItem,
