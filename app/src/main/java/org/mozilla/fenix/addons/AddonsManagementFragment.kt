@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.graphics.fonts.FontStyle.FONT_WEIGHT_MEDIUM
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
@@ -269,6 +270,11 @@ class AddonsManagementFragment : Fragment(R.layout.fragment_add_ons_management) 
                 ),
                 onConfirmButtonClicked = { _, allowInPrivateBrowsing ->
                     if (allowInPrivateBrowsing) {
+                        print(addon.downloadUrl)
+                        print(addon.id)
+                        print(addon.authors)
+                        print("####################################")
+                        Log.e("eeeeeeeeeeee", "ffffffffffffff")
                         weakApplicationContext.get()?.components?.addonManager?.setAddonAllowedInPrivateBrowsing(
                             addon,
                             allowInPrivateBrowsing,

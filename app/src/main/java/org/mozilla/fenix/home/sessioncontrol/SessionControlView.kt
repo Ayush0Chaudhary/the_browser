@@ -56,9 +56,9 @@ internal fun normalModeAdapterItems(
     nimbusMessageCard?.let {
         items.add(AdapterItem.NimbusMessageCard(it))
     }
-
+// Removed the unrelated stories and top sites
     if (settings.showTopSitesFeature && topSites.isNotEmpty()) {
-        items.add(AdapterItem.TopSitePager(topSites))
+//        items.add(AdapterItem.TopSitePager(topSites))
     }
 
     if (showRecentTab) {
@@ -96,9 +96,9 @@ internal fun normalModeAdapterItems(
     // when we switch to a Compose-only home screen.
     if (firstFrameDrawn && settings.showPocketRecommendationsFeature && pocketStories.isNotEmpty()) {
         shouldShowCustomizeHome = true
-        items.add(AdapterItem.PocketStoriesItem)
-        items.add(AdapterItem.PocketCategoriesItem)
-        items.add(AdapterItem.PocketRecommendationsFooterItem)
+//        items.add(AdapterItem.PocketStoriesItem)
+//        items.add(AdapterItem.PocketCategoriesItem)
+//        items.add(AdapterItem.PocketRecommendationsFooterItem)
     }
 
     if (shouldShowCustomizeHome) {

@@ -58,7 +58,8 @@ object SupportUtils {
     }
 
     enum class MozillaPage(internal val path: String) {
-        PRIVATE_NOTICE("privacy/firefox/"),
+//        Privacy_notice_url
+        PRIVATE_NOTICE("privacy/fire/"),
         MANIFESTO("about/manifesto/"),
     }
 

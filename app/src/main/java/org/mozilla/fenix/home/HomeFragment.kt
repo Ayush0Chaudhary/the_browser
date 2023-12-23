@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -296,17 +297,31 @@ class HomeFragment : Fragment() {
         }
 
         // The below code install the Jeetube extension on the mobile whenever the Home screen is created
-        if(requireContext().settings().installedAddonsCount < 1){
+        if(requireContext().settings().installedAddonsCount < 2){
+
+            val addon = Addon(id = "7c94db4e-4f38-410b-9ae2-5e77fa6dbbc5",
+            // yooooooooooo change this link, yooooooooooooooooooooooooooo, heh hehe here jeetube extension link below
+            // just change the version number
+            // for example jeetube-1.1.xpi   ---------->  jeetube-1.2.xpi
+            downloadUrl = "https://addons.mozilla.org/android/downloads/file/4209466/jeetube-1.3.xpi")
+
             requireContext().components.addonManager.installAddon(
-                Addon(id = "7c94db4e-4f38-410b-9ae2-5e77fa6dbbc5",
-                      downloadUrl = "https://addons.mozilla.org/android/downloads/file/4180058/jeetube-1.1.xpi"),
+                addon,
                 onSuccess = {
+//                    requireContext().components.addonManager.set
                     println("chal gya bhenchooddddddd")
+                    Log.e("fffffffffffffff", "chal gya bhenchooddddddd")
+                    requireContext().components.addonManager.setAddonAllowedInPrivateBrowsing(it, true, onSuccess = {
+                        Log.e("eeeeeeeeeeeeeeeeee", it.id)
+                    }, onError = {
+                        Log.e("ggggggggggggggggggggg",it.message.toString())
+                    })
                 },
                 onError = { _, e ->
                     println("nhi chla bc$e")
                 },
             )
+
             requireContext().settings().installedAddonsCount++;
         }
 
