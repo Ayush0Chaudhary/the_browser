@@ -470,6 +470,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     jnaForTest FenixDependencies.jna
     testImplementation files(configurations.jnaForTest.copyRecursive().files)
 

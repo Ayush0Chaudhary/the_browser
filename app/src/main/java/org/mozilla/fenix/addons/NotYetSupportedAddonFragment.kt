@@ -42,10 +42,13 @@ class NotYetSupportedAddonFragment :
 
         val binding = FragmentNotYetSupportedAddonsBinding.bind(view)
 
-        binding.unsupportedAddOnsList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = unsupportedAddonsAdapter
-        }
+        /**
+         * So that the person is not able to delete the addons.
+         */
+//        binding.unsupportedAddOnsList.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            adapter = unsupportedAddonsAdapter
+//        }
 
         binding.learnMoreLabel.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).setData(Uri.parse(LEARN_MORE_URL))

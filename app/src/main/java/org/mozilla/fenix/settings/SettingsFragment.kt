@@ -6,13 +6,17 @@ package org.mozilla.fenix.settings
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.StrictMode
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
@@ -29,6 +33,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mozilla.components.browser.state.state.selectedOrDefaultSearchEngine
@@ -47,6 +52,7 @@ import org.mozilla.fenix.GleanMetrics.Events
 import org.mozilla.fenix.GleanMetrics.TrackingProtection
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
+import org.mozilla.fenix.analytics.AnalyticsApi
 import org.mozilla.fenix.databinding.AmoCollectionOverrideDialogBinding
 import org.mozilla.fenix.ext.application
 import org.mozilla.fenix.ext.components
@@ -57,6 +63,7 @@ import org.mozilla.fenix.ext.requireComponents
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showToolbar
 import org.mozilla.fenix.nimbus.FxNimbus
+import org.mozilla.fenix.onboarding.FenixOnboarding
 import org.mozilla.fenix.perf.ProfilerViewModel
 import org.mozilla.fenix.settings.account.AccountUiView
 import org.mozilla.fenix.utils.Settings
@@ -68,6 +75,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val args by navArgs<SettingsFragmentArgs>()
     private lateinit var accountUiView: AccountUiView
     private val profilerViewModel: ProfilerViewModel by activityViewModels()
+
+
 
     @VisibleForTesting
     internal val accountObserver = object : AccountObserver {
@@ -95,6 +104,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
 
         accountUiView = AccountUiView(
             fragment = this,
@@ -150,6 +162,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 updateProfilerUI(it)
             },
         )
+    }
+
+    private fun getSharedPreferences(): SharedPreferences {
+        return requireContext().getSharedPreferences(
+            FenixOnboarding.PREF_NAME_ONBOARDING_KEY,
+            Context.MODE_PRIVATE
+        )
+    }
+    private fun getUserId(preferences: SharedPreferences): String? {
+        return preferences.getString(FenixOnboarding.USER_ID_KEY, null)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -495,6 +517,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
      * For <N -> Open sumo page to show user how to change default app.
      */
     private fun getClickListenerForMakeDefaultBrowser(): Preference.OnPreferenceClickListener {
+        // Initialize your SharedPreferences
+        val preferences = getSharedPreferences()
+
+        // Retrieve the user ID
+        val userId = getUserId(preferences)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                // Call your API here
+                val response = AnalyticsApi.retrofitService.getDefaultBrowser(userId.toString())
+                Log.e("defaultAnalytics", response)
+                // Process the API response here
+                // Note: Since your Retrofit service returns a String, you can process it accordingly
+
+            } catch (e: Exception) {
+                // Handle exceptions here
+                Log.e("errorInDefaultAnalytic", e.toString())
+            }
+        }
         return Preference.OnPreferenceClickListener {
             activity?.openSetDefaultBrowserOption()
             true

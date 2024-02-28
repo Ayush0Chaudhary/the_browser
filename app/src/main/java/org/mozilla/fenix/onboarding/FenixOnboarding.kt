@@ -18,7 +18,15 @@ class FenixOnboarding(context: Context) : PreferencesHolder {
 
     private val strictMode = context.components.strictMode
     private val settings = context.settings()
+    // Method to store a user identifier
+    fun storeUserId(userId: String) {
+        preferences.edit().putString(USER_ID_KEY, userId).apply()
+    }
 
+    // Method to retrieve the user identifier
+    fun getUserId(): String? {
+        return preferences.getString(USER_ID_KEY, null)
+    }
     override val preferences: SharedPreferences = strictMode.resetAfter(StrictMode.allowThreadDiskReads()) {
         context.getSharedPreferences(
             PREF_NAME_ONBOARDING_KEY,
@@ -62,12 +70,16 @@ class FenixOnboarding(context: Context) : PreferencesHolder {
         /**
          * Name of the shared preferences file.
          */
-        private const val PREF_NAME_ONBOARDING_KEY = "fenix.onboarding"
+        const val PREF_NAME_ONBOARDING_KEY = "fenix.onboarding"
 
         /**
          * Key for [onboardedVersion].
          */
         @VisibleForTesting
         internal const val LAST_VERSION_ONBOARDING_KEY = "fenix.onboarding.last_version"
+
+//
+        @VisibleForTesting
+        internal const val USER_ID_KEY = "fenix.onboarding.user_id"
     }
 }

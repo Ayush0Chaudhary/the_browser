@@ -16,6 +16,7 @@ import android.os.SystemClock
 import android.text.TextUtils
 import android.text.format.DateUtils
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ActionMode
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -37,9 +38,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import mozilla.appservices.places.BookmarkRoot
 import mozilla.components.browser.state.action.ContentAction
@@ -65,6 +68,7 @@ import mozilla.components.support.ktx.android.arch.lifecycle.addObservers
 import mozilla.components.support.ktx.android.content.call
 import mozilla.components.support.ktx.android.content.email
 import mozilla.components.support.ktx.android.content.share
+import mozilla.components.support.ktx.android.view.reportFullyDrawnSafe
 import mozilla.components.support.ktx.kotlin.isUrl
 import mozilla.components.support.ktx.kotlin.toNormalizedUrl
 import mozilla.components.support.locale.LocaleAwareAppCompatActivity
@@ -78,6 +82,7 @@ import org.mozilla.fenix.GleanMetrics.Metrics
 import org.mozilla.fenix.GleanMetrics.StartOnHome
 import org.mozilla.fenix.addons.AddonDetailsFragmentDirections
 import org.mozilla.fenix.addons.AddonPermissionsDetailsFragmentDirections
+import org.mozilla.fenix.analytics.AnalyticsApi
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
 import org.mozilla.fenix.browser.browsingmode.BrowsingModeManager
 import org.mozilla.fenix.browser.browsingmode.DefaultBrowsingModeManager
@@ -145,8 +150,11 @@ import org.mozilla.fenix.theme.ThemeManager
 import org.mozilla.fenix.trackingprotection.TrackingProtectionPanelDialogFragmentDirections
 import org.mozilla.fenix.utils.BrowsersCache
 import org.mozilla.fenix.utils.Settings
+import retrofit2.Retrofit
 import java.lang.ref.WeakReference
 import java.util.Locale
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * The main activity of the application. The application is primarily a single Activity (this one)
@@ -276,12 +284,22 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
             StartOnHome.enterHomeScreen.record(NoExtras())
         }
 
+        if(onboarding.getUserId() == null){
+            val currentTimeMillis = System.currentTimeMillis()
+            onboarding.storeUserId(currentTimeMillis.toString())
+        }
+
         if (settings().showHomeOnboardingDialog && onboarding.userHasBeenOnboarded()) {
             navHost.navController.navigate(NavGraphDirections.actionGlobalHomeOnboardingDialog())
         }
 
         Performance.processIntentIfPerformanceTest(intent, this)
 
+//
+//        CoroutineScope(Dispatchers.Main).launch {
+//            val response = AnalyticsApi.retrofitService.getStart(onboarding.getUserId().toString())
+//            Log.e("startAnalytic", response)
+//        }
         if (settings().isTelemetryEnabled) {
             lifecycle.addObserver(
                 BreadcrumbsRecorder(
@@ -1168,3 +1186,4 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
         const val PWA_RECENTLY_USED_THRESHOLD = DateUtils.DAY_IN_MILLIS * 30L
     }
 }
+
